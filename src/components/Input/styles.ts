@@ -33,6 +33,9 @@ const Container = styled.div<ContainerProps>`
       color: #ff9000;
     `}
 
+  svg {
+    margin-right: 16px;
+  }
 
   input {
     flex: 1;
@@ -49,8 +52,8 @@ const Container = styled.div<ContainerProps>`
     }
   }
 
-  svg {
-    margin-right: 16px;
+  span {
+    font-size: 10px;
   }
 `;
 
