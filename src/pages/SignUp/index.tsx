@@ -11,8 +11,12 @@ import { Container, Content, Background } from './styles';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
+import { useAuth } from '../../hooks/Auth';
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { user } = useAuth();
+  console.log(user);
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(async (data: object) => {

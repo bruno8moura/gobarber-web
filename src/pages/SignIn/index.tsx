@@ -11,7 +11,8 @@ import { Container, Content, Background } from './styles';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
 
 interface SigningFormData {
   email: string;
@@ -21,6 +22,7 @@ interface SigningFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = useCallback(
@@ -41,16 +43,24 @@ const SignIn: React.FC = () => {
             abortEarly: false,
           },
         );
-        signIn({
+        await signIn({
           email,
           password,
         });
       } catch (err) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+
+          addToast({
+            type: 'error',
+            title: 'Error title',
+            description: 'Error description',
+          });
+        }
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
